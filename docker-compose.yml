@@ -1,0 +1,9 @@
+version: '2'
+services:
+
+  provesense-api:
+    build: .
+    ports:
+     - "4567:4567"
+    environment:
+      SPARQL_ENDPOINT: http://localhost:9999/blazegraph/sparql

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+  <Appenders>
+    <File name="file" fileName="provesense-api.log" bufferedIO="false" advertiseURI="file://provesense-api.log" advertise="true"/>  
+  </Appenders>
+  <Loggers>
+    <Root level="debug">
+      <AppenderRef ref="file"/>
+    </Root>
+  </Loggers>
+</Configuration>
