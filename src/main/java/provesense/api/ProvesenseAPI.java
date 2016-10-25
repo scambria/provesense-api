@@ -58,7 +58,7 @@ public class ProvesenseAPI {
 			" ?descendant prov:wasInfluencedBy* ?ancestor . " + 
 			" FILTER(?descendant != ?ancestor) " + 
 			" OPTIONAL { " + 
-			" ?mid prov:wasInfluencedBy+ ?descendant . " + 
+			" ?descendant prov:wasInfluencedBy+ ?mid . " + 
 			" FILTER(?mid != ?descendant && ?mid != ?ancestor) } } " + 
 			"GROUP BY ?ancestor ?descendant " + 
 			"ORDER BY DESC(?depth) ?ancestor ?descendant ";
@@ -84,7 +84,7 @@ public class ProvesenseAPI {
 			" ?descendant prov:wasInfluencedBy* %s . " + 
 			" FILTER(?descendant != %s) " + 
 			" OPTIONAL{ " + 
-			"  ?mid prov:wasInfluencedBy+ ?descendant . " + 
+			"  ?descendant prov:wasInfluencedBy+ ?mid . " + 
 			"  FILTER(?mid != ?descendant && ?mid != %s) } }" + 
 			"GROUP BY ?descendant " + 
 			"ORDER BY DESC(?generation_depth) ";
@@ -96,7 +96,7 @@ public class ProvesenseAPI {
 			" ?descendant prov:wasInfluencedBy* %s . " + 
 			" FILTER(?descendant != %s) " + 
 			" OPTIONAL{ " + 
-			"  ?mid prov:wasInfluencedBy+ ?descendant . " + 
+			"  ?descendant prov:wasInfluencedBy+ ?mid . " + 
 			"  FILTER(?mid != ?descendant && ?mid != %s) } } " + 
 			"GROUP BY ?descendant " + 
 			"ORDER BY DESC(?generation_depth) " + 
@@ -104,14 +104,17 @@ public class ProvesenseAPI {
 
 	private static String SPARQL_ANCESTORS_OF_NODE = 
 			"PREFIX prov: <http://www.w3.org/ns/prov#> " + 
-			"SELECT * WHERE { ?s a prov:Activity . " + 
-			" ?s prov:generated* ?o " + 
-			" FILTER(?s != ?o)}";
+			"PREFIX : <http://provo.ssn.org/provesense#> " +
+			"SELECT DISTINCT ?ancestors WHERE  { " + 
+			"%s prov:wasInfluencedBy* ?ancestors . " + 
+			"FILTER(%s != ?ancestors) }  ";
 
 	private static String SPARQL_ANCESTORS_COUNT_OF_NODE = 
 			"PREFIX prov: <http://www.w3.org/ns/prov#> " + 
-			"SELECT * WHERE { ?s a prov:Activity . " + 
-			" ?s prov:generated* ?o " + "FILTER(?s != ?o)}";
+			"PREFIX : <http://provo.ssn.org/provesense#> " + 			
+			"SELECT DISTINCT (COUNT(?ancestors) as ?count) WHERE  {   " +  
+			"%s prov:wasInfluencedBy* ?ancestors . " + 
+			"FILTER(%s != ?ancestors) }  ";
 
 	/**
 	 * 
